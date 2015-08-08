@@ -23,14 +23,14 @@ public class GTX2Simulator {
 
    public static void main(String args[]) {
 
-//      testLowForecastService();
-//      testLowForecastServiceNoResultsScenario();
-//      testLowForecastServiceErrorScenario();
-//      testLowForecastOldServiceCall();
+      testLowForecastService();
+      testLowForecastServiceNoResultsScenario();
+      testLowForecastServiceErrorScenario();
+      testLowForecastOldServiceCall();
       testLeadPriceCalendarServiceErrorScenario();
-//      testLeadPriceCalendarService();
+      testLeadPriceCalendarService();
       testLeadPriceCalendarServiceWhichReturnsMultipleOptionsForSpecificDepartureDate();
-//      testLeadPriceCalendarServiceWithNoDepartureDate();
+      testLeadPriceCalendarServiceWithNoDepartureDate();
 
    }
 

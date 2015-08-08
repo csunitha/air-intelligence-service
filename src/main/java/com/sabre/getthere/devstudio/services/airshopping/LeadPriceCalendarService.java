@@ -1,12 +1,11 @@
 package com.sabre.getthere.devstudio.services.airshopping;
 
 import com.sabre.getthere.devstudio.domain.airshopping.FaresInfo;
-import com.sabre.getthere.devstudio.services.AbstractService;
 import com.sabre.getthere.devstudio.domain.airshopping.LeadPriceCalendarRequest;
 import com.sabre.getthere.devstudio.domain.airshopping.LeadPriceCalendarResponse;
+import com.sabre.getthere.devstudio.services.ServiceHelper;
 import com.sabre.getthere.devstudio.translator.airshopping.LeadPriceCalendarRequestTranslator;
 import com.sabre.getthere.devstudio.translator.airshopping.LeadPriceCalendarResponseTranslator;
-import flexjson.JSONSerializer;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -17,15 +16,16 @@ import java.util.List;
  * User: Sunitha C
  * Date: 8/4/2015 4:18 PM
  */
-public class LeadPriceCalendarService extends AbstractService{
+public class LeadPriceCalendarService {
    private static final int MILLI_SECONDS_PER_DAY = 24 * 60 * 60 * 1000;
    private LeadPriceCalendarRequestTranslator requestTranslator = new LeadPriceCalendarRequestTranslator();
    private LeadPriceCalendarResponseTranslator responseTranslator = new LeadPriceCalendarResponseTranslator();
+   private ServiceHelper serviceHelper = new ServiceHelper();
 
    public LeadPriceCalendarResponse execute(LeadPriceCalendarRequest leadPriceCalendarRequest) {
       return responseTranslator.translate(
-              makeServiceCallToGetLeadPriceCalendar(
-                      requestTranslator.translate(leadPriceCalendarRequest), makeServiceCallToGetAuthenticationToken()));
+              serviceHelper.makeServiceCallToGetLeadPriceCalendar(
+                      requestTranslator.translate(leadPriceCalendarRequest), serviceHelper.makeServiceCallToGetAuthenticationToken()));
    }
 
    public LeadPriceCalendarResponse execute(String origin, String destination, GregorianCalendar departureDate, GregorianCalendar returnDate) {
@@ -38,8 +38,8 @@ public class LeadPriceCalendarService extends AbstractService{
       leadPriceCalendarRequest.setLengthOfStay(numberOfDays);
 
       LeadPriceCalendarResponse response = responseTranslator.translate(
-              makeServiceCallToGetLeadPriceCalendar(
-                      requestTranslator.translate(leadPriceCalendarRequest), makeServiceCallToGetAuthenticationToken()));
+              serviceHelper.makeServiceCallToGetLeadPriceCalendar(
+                      requestTranslator.translate(leadPriceCalendarRequest), serviceHelper.makeServiceCallToGetAuthenticationToken()));
 
       Iterator<FaresInfo> faresInfoIterator = response.getFaresInfo().iterator();
 

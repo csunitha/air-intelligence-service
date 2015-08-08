@@ -13,31 +13,32 @@ import java.util.HashMap;
 
 /**
  * User: Sunitha C
- * Date: 8/4/2015 12:29 PM
+ * Date: 8/8/2015 8:23 PM
  */
-public abstract class AbstractService {
+public class ServiceHelper {
+   private static final String API_ENDPOINT = "https://api.test.sabre.com";
+   private static final String AUTHENTICATION_SERVICE_URL = API_ENDPOINT + "/v2/auth/token";
+   private static final String LEAD_PRICE_CALENDAR_SERVICE_URL = API_ENDPOINT + "/v2/shop/flights/fares";
+   private static final String LOW_FARE_FORECAST_SERVICE_URL = API_ENDPOINT + "/v1/forecast/flights/fares/";
+
+   private static final String CLIENT_SECRET = "";
+   private static final String CLIENT_ID = "";
+
    private static final String EMPTY_STRING = "";
-   public static String API_ENDPOINT = "https://api.test.sabre.com";
-   public static final String AUTHENTICATION_SERVICE_URL = API_ENDPOINT + "/v2/auth/token";
-   public static final String LOW_FARE_FORECAST_SERVICE_URL = API_ENDPOINT + "/v1/forecast/flights/fares/";
-   public static final String LEAD_PRICE_CALENDAR_SERVICE_URL = API_ENDPOINT + "/v2/shop/flights/fares";
-   public static final String CLIENT_SECRET = "";
-   public static final String CLIENT_ID = "";
 
-
-   protected String makeServiceCallToGetAuthenticationToken() {
+   public String makeServiceCallToGetAuthenticationToken() {
       String tokenResponse = makeServiceCallToGetAuthenticationToken(getAuthenticationUri(), getEncodedClientSecretKey());
       HashMap deserializedTokenResponse = (HashMap) new JSONDeserializer().deserialize(tokenResponse);
       return (String) deserializedTokenResponse.get("access_token");
    }
 
-   protected String makeServiceCallToGetLowFareForecast(String request, String authenticationToken) {
-      String uri = getLowFareForecastUri() + request;
+   public String makeServiceCallToGetLeadPriceCalendar(String request, String authenticationToken) {
+      String uri = getLeadPriceCalendarUri() + request;
       return makeServiceCall(uri, authenticationToken);
    }
 
-   protected String makeServiceCallToGetLeadPriceCalendar(String request, String authenticationToken) {
-      String uri = getLeadPriceCalendarUri() + request;
+   public String makeServiceCallToGetLowFareForecast(String request, String authenticationToken) {
+      String uri = getLowFareForecastUri() + request;
       return makeServiceCall(uri, authenticationToken);
    }
 
@@ -54,25 +55,6 @@ public abstract class AbstractService {
          getMethod.releaseConnection();
       }
       return EMPTY_STRING;
-   }
-
-   private Header getHeaderUpdatedWithAuthorizationToken(String authenticationToken) {
-      Header mtHeader = new Header();
-      mtHeader.setName("Authorization");
-      mtHeader.setValue("Bearer " + authenticationToken);
-      return mtHeader;
-   }
-
-   private String getLowFareForecastUri() {
-      return (LOW_FARE_FORECAST_SERVICE_URL);
-   }
-
-   private String getLeadPriceCalendarUri() {
-      return (LEAD_PRICE_CALENDAR_SERVICE_URL);
-   }
-
-   private String getAuthenticationUri() {
-      return AUTHENTICATION_SERVICE_URL;
    }
 
    private String makeServiceCallToGetAuthenticationToken(String authenticationUri, String encodedClientIdSecretKey) {
@@ -116,6 +98,25 @@ public abstract class AbstractService {
       return new NameValuePair("grant_type", "client_credentials");
    }
 
+   private Header getHeaderUpdatedWithAuthorizationToken(String authenticationToken) {
+      Header mtHeader = new Header();
+      mtHeader.setName("Authorization");
+      mtHeader.setValue("Bearer " + authenticationToken);
+      return mtHeader;
+   }
+
+   private String getAuthenticationUri() {
+      return AUTHENTICATION_SERVICE_URL;
+   }
+
+   private String getLeadPriceCalendarUri() {
+      return (LEAD_PRICE_CALENDAR_SERVICE_URL);
+   }
+
+   private String getLowFareForecastUri() {
+      return (LOW_FARE_FORECAST_SERVICE_URL);
+   }
+
    private String getEncodedClientSecretKey() {
       return Base64.encodeBase64String((getEncodedClientId() + ":" + getEncodedClientSecret()).getBytes());
    }
@@ -127,4 +128,5 @@ public abstract class AbstractService {
    private String getEncodedClientId() {
       return Base64.encodeBase64String(CLIENT_ID.getBytes());
    }
+
 }

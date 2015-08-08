@@ -1,7 +1,7 @@
 package com.sabre.getthere.devstudio.translator.airshopping;
 
 import com.sabre.getthere.devstudio.domain.airshopping.LeadPriceCalendarRequest;
-import com.sabre.getthere.devstudio.translator.AbstractRequestTranslator;
+import com.sabre.getthere.devstudio.translator.RequestTranslatorHelper;
 
 import java.util.List;
 
@@ -9,17 +9,18 @@ import java.util.List;
  * User: Sunitha C
  * Date: 8/4/2015 4:22 PM
  */
-public class LeadPriceCalendarRequestTranslator extends AbstractRequestTranslator {
+public class LeadPriceCalendarRequestTranslator {
    private static final String LENGTH_OF_STAY_SEPARTOR = ",+";
+   private RequestTranslatorHelper helper = new RequestTranslatorHelper();
 
    public String translate(LeadPriceCalendarRequest request) {
-      String searchCriteria = "?" + "origin=" + request.getOrigin() + PARAMETER_SEPERATOR +
-              "destination=" + request.getDestination() + PARAMETER_SEPERATOR +
+      String searchCriteria = "?" + "origin=" + request.getOrigin() + helper.PARAMETER_SEPERATOR +
+              "destination=" + request.getDestination() + helper.PARAMETER_SEPERATOR +
               "lengthofstay=" + getLengthOfStayInStringFormat(request.getLengthOfStay()) ;
 
       if(request.getDepartureDate() != null ) {
-         searchCriteria = searchCriteria + PARAMETER_SEPERATOR +
-                 "departuredate=" + getDateInStringFormat(request.getDepartureDate());
+         searchCriteria = searchCriteria + helper.PARAMETER_SEPERATOR +
+                 "departuredate=" + helper.getDateInStringFormat(request.getDepartureDate());
       }
 
       //TODO

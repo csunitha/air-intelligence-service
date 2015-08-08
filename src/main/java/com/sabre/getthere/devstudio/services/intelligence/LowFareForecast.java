@@ -1,6 +1,6 @@
 package com.sabre.getthere.devstudio.services.intelligence;
 
-import com.sabre.getthere.devstudio.services.AbstractService;
+import com.sabre.getthere.devstudio.services.ServiceHelper;
 import flexjson.JSONDeserializer;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -16,9 +16,11 @@ import java.util.HashMap;
  * Date: 7/30/2015 2:42 PM
  */
 @Deprecated
-public class LowFareForecast extends AbstractService {
+public class LowFareForecast {
    private static final String EMPTY_STRING = "";
+   private static final String LOW_FARE_FORECAST_SERVICE_URL = "https://api.test.sabre.com/v1/forecast/flights/fares/";
    private HttpClient client = new HttpClient();
+   private ServiceHelper helper = new ServiceHelper();
 
    public static void main(String args[]) {
       LowFareForecast lowFareForecast = new LowFareForecast();
@@ -63,7 +65,7 @@ public class LowFareForecast extends AbstractService {
    private Header getHeaderUpdatedWithAuthorizationToken() {
       Header mtHeader = new Header();
       mtHeader.setName("Authorization");
-      mtHeader.setValue("Bearer " + makeServiceCallToGetAuthenticationToken());
+      mtHeader.setValue("Bearer " + helper.makeServiceCallToGetAuthenticationToken());
       return mtHeader;
    }
 
